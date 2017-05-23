@@ -13,7 +13,7 @@ RewriteCond %{REQUEST_URI} !^/media
 RewriteCond %{REQUEST_URI} !^/utils
 RewriteCond %{REQUEST_URI} !^/versions
 RewriteCond %{REQUEST_URI} !^/visual
-RewriteRule ^(.*)$ /home [R]
+RewriteRule ^(.*)$ /home [L]
 
 
 # BEGIN GZIP
