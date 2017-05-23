@@ -3,19 +3,6 @@
 Options -Indexes
 
 
-# BROWSER REDIRECT
-
-RewriteEngine On
-RewriteCond %{REQUEST_URI} !^/alerts
-RewriteCond %{REQUEST_URI} !^/api
-RewriteCond %{REQUEST_URI} !^/core
-RewriteCond %{REQUEST_URI} !^/media
-RewriteCond %{REQUEST_URI} !^/utils
-RewriteCond %{REQUEST_URI} !^/versions
-RewriteCond %{REQUEST_URI} !^/visual
-RewriteRule ^(.*)$ /home [L]
-
-
 # BEGIN GZIP
 
 <ifmodule mod_deflate.c>
