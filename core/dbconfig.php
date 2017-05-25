@@ -20,11 +20,6 @@ function sanitize_output($buffer) {
 
 
 
-// Config
-require_once('config.php');
-
-
-
 // TimeZone
 date_default_timezone_set('UTC');
 
