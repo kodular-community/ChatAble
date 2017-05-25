@@ -1,3 +1,8 @@
+# Homde Directory
+
+RewriteBase /
+
+
 # DISABLE INDEXING
 
 Options -Indexes
