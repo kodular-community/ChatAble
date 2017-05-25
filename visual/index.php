@@ -1,4 +1,4 @@
-<html><head><title>ChatAble Visual Chat</title><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><link rel="stylesheet" type="text/css" media="all" href="assets/emoji/emoji.css" /><link rel="stylesheet" type="text/css" media="all" href="assets/fontawesome/css/font-awesome.min.css" /><link href="assets/lightbox/css/lightbox.css" rel="stylesheet"></head><body>
+<html><head><title>ChatAble Visual Chat</title><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"><link rel="stylesheet" type="text/css" media="all" href="/visual/assets/style.css"><link rel="stylesheet" type="text/css" media="all" href="/visual/assets/emoji/emoji.css" /><link rel="stylesheet" type="text/css" media="all" href="/visual/assets/fontawesome/css/font-awesome.min.css" /><link href="/visual/assets/lightbox/css/lightbox.css" rel="stylesheet"></head><body>
 <?php
 // For DEBUG: Display all errors
 error_reporting(E_ALL);
@@ -10,11 +10,18 @@ require_once('../core/functions.php');
 $ChatAble = new CHATABLE();
 $Parsedown = new Parsedown();
 
-if (!isset($_GET['reqChat']) or !isset($_GET['reqUser'])) {
+if (!$_SERVER['PATH_INFO']) {
+  exit("Request a method");
+} else {
+  $request = explode('/', trim($_SERVER['PATH_INFO'],'/'));
+  $method = preg_replace('/[^a-z0-9_]+/i','',array_shift($request));
+}
+
+if (!isset($_GET['reqConv']) or !isset($_GET['reqUser'])) {
   exit("Missing params");
 } else {
   $reqUser = $_GET['reqUser'];
-  $reqChat = $_GET['reqChat'];
+  $reqConv = $_GET['reqConv'];
   $passwd = $_GET['passwd'];
 
   if (!isset($_GET['currentTime'])) {
@@ -31,15 +38,16 @@ if (!isset($_GET['reqChat']) or !isset($_GET['reqUser'])) {
   $diffMinutes = floor($diffSeconds / 60);
   $diffSeconds -= $diffMinutes * 60;
 
-  if ($_GET['chatType'] == "private") {
-    $messages = $ChatAble->get_private_messages($reqChat,$reqUser);
-    $convName = $ChatAble->get_private_name($reqChat,$reqUser,"username");
-    $guestUser = $ChatAble->get_private_name($reqChat,$reqUser,"id");
+  if ($method == "PRIVATE") {
+    $PRIVATE = $ChatAble->LOAD("PRIVATE_CHAT");
+    $messages = $PRIVATE->get_messages($reqConv,$reqUser);
+    $convName = $PRIVATE->get_name($reqConv,$reqUser,"username");
+    $guestUser = $PRIVATE->get_name($reqConv,$reqUser,"id");
 ?>
     <div class="menu">
       <div class="name"><?php echo $convName; ?></div>
       <div class="members"><?php
-        $stmt = $ChatAble->runQuery("SELECT counter FROM reader WHERE user_id='$guestUser' AND chat_id='$reqChat' AND type='private';");
+        $stmt = $ChatAble->runQuery("SELECT counter FROM reader WHERE user_id='$guestUser' AND chat_id='$reqConv' AND type='private';");
         $stmt->execute();
         $unread = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -86,14 +94,15 @@ if (!isset($_GET['reqChat']) or !isset($_GET['reqUser'])) {
       ?>
     </ol>
 <?php
-  } elseif ($_GET['chatType'] == "support") {
-    $messages = $ChatAble->get_support_messages($reqChat,$reqUser);
-    $ticketName = $ChatAble->get_support_title($reqChat);
+  } elseif ($method == "SUPPORT") {
+    $SUPPORT = $ChatAble->LOAD("SUPPORT_CHAT");
+    $messages = $SUPPORT->get_messages($reqConv,$reqUser);
+    $ticketName = $SUPPORT->get_title($reqConv);
 ?>
     <div class="menu">
       <div class="name"><?php echo $ticketName; ?></div>
       <div class="members"><?php
-        $stmt = $ChatAble->runQuery("SELECT admin_id FROM support_tickets WHERE id='$reqChat';");
+        $stmt = $ChatAble->runQuery("SELECT admin_id FROM support_tickets WHERE id='$reqConv';");
         $stmt->execute();
         $adminId = $stmt->fetch(PDO::FETCH_ASSOC)['admin_id'];
 
@@ -153,11 +162,12 @@ if (!isset($_GET['reqChat']) or !isset($_GET['reqUser'])) {
       ?>
     </ol>
 <?php
-  } elseif ($_GET['chatType'] == "group") {
-    $messages = $ChatAble->get_group_messages($reqChat,$reqUser);
-    $groupName = $ChatAble->get_group_data("title",$reqChat);
-    $groupUsers = $ChatAble->get_group_data("users",$reqChat);
-    $groupCreator = $ChatAble->get_group_data("creator",$reqChat);
+  } elseif ($method == "GROUP") {
+    $GROUP = $ChatAble->LOAD("GROUP_CHAT");
+    $messages = $GROUP->get_messages($reqConv,$reqUser);
+    $groupName = $GROUP->get_data("title",$reqConv);
+    $groupUsers = $GROUP->get_data("users",$reqConv);
+    $groupCreator = $GROUP->get_data("creator",$reqConv);
 ?>
     <div class="menu">
       <div class="name"><?php echo $groupName; ?></div>
@@ -221,6 +231,6 @@ if (!isset($_GET['reqChat']) or !isset($_GET['reqUser'])) {
 }
 ?>
   <div id="bottom"></div>
-  <script src="assets/lightbox/js/lightbox.js"></script>
+  <script src="/visual/assets/lightbox/js/lightbox.js"></script>
   </body>
 </html>
