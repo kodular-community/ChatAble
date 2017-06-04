@@ -24,7 +24,6 @@ if (!isset($_GET['key'])) {
 
 // Function
 if (isset($_GET['versions'])) {
-  require_once("../core/config.php");
   $result = $VERSIONS->version_code();
   print($result['versionCode']);
 }

@@ -28,6 +28,7 @@ date_default_timezone_set('UTC');
 // DB Connection
 class Database
 {
+  require_once("config.php");
   private $host = DB_HOST;
   private $db_name = DB_NAME;
   private $username = DB_USER;
