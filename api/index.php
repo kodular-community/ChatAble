@@ -90,7 +90,7 @@ if ($method == "USER") {
 } elseif ($method == "PRIVATE") {
   $PRIVATE = $ChatAble->LOAD("PRIVATE_CHAT");
 
-  if ($function == "get_private_chats") {
+  if ($function == "get_chats") {
     if (!isset($_GET['id'])) {
       exit("Missing id");
     }
@@ -102,7 +102,7 @@ if ($method == "USER") {
     }
     $result = $PRIVATE->get_chats($id,$request);
 
-  } elseif ($function == "create_private_chat") {
+  } elseif ($function == "create") {
     if (!isset($_GET['id']) or !isset($_GET['guest'])) {
       exit("Missing params");
     }
@@ -118,7 +118,7 @@ if ($method == "USER") {
     }
     $result = $PRIVATE->create($id,$guest,$type);
 
-  } elseif ($function == "post_private_message") {
+  } elseif ($function == "post") {
     if (!isset($_GET['userId']) or !isset($_GET['convId']) or !isset($_GET['content'])) {
       exit("Missing params");
     }
@@ -133,7 +133,7 @@ if ($method == "USER") {
     }
     $result = $PRIVATE->post($userId,$convId,$content,$type,$passwd);
 
-  } elseif ($function == "count_private_messages") {
+  } elseif ($function == "count") {
     if (!isset($_GET['convId'])) {
       exit("Missing params");
     }
@@ -148,7 +148,7 @@ if ($method == "USER") {
 } elseif ($method == "SUPPORT") {
   $SUPPORT = $ChatAble->LOAD("SUPPORT_CHAT");
 
-  if ($function == "get_support_tickets") {
+  if ($function == "get_tickets") {
     if (!isset($_GET['id'])) {
       exit("Missing id");
     }
@@ -160,7 +160,7 @@ if ($method == "USER") {
     }
     $result = $SUPPORT->get_tickets($id,$request);
 
-  } elseif ($function == "create_support_ticket") {
+  } elseif ($function == "create") {
     if (!isset($_GET['id']) or !isset($_GET['title']) or !isset($_GET['content'])) {
       exit("Missing params");
     }
@@ -184,7 +184,7 @@ if ($method == "USER") {
     }
     $result = $SUPPORT->post($userId,$ticketId,$content,$type,$passwd);
 
-  } elseif ($function == "count_support_messages") {
+  } elseif ($function == "count") {
     if (!isset($_GET['ticketId'])) {
       exit("Missing params");
     }
@@ -199,7 +199,7 @@ if ($method == "USER") {
 } elseif ($method == "GROUP") {
   $GROUP = $ChatAble->LOAD("GROUP_CHAT");
 
-  if ($function == "get_group_chats") {
+  if ($function == "get_chats") {
     if (!isset($_GET['id'])) {
       exit("Missing id");
     }
@@ -211,7 +211,7 @@ if ($method == "USER") {
     }
     $result = $GROUP->get_chats($id,$request);
 
-  } elseif ($function == "create_group_chat") {
+  } elseif ($function == "create") {
     if (!isset($_GET['id']) or !isset($_GET['title']) or !isset($_GET['alias']) or !isset($_GET['password'])) {
       exit("Missing params");
     }
@@ -221,7 +221,7 @@ if ($method == "USER") {
     $password = (empty($_GET['password'])) ? "": md5(html_entity_decode($_GET['password']));
     $result = $GROUP->create($id,$title,$alias,$password);
 
-  } elseif ($function == "post_group_message") {
+  } elseif ($function == "post") {
     if (!isset($_GET['userId']) or !isset($_GET['groupId']) or !isset($_GET['content'])) {
       exit("Missing params");
     }
@@ -236,14 +236,14 @@ if ($method == "USER") {
     }
     $result = $GROUP->post($userId,$groupId,$content,$type,$passwd);
 
-  } elseif ($function == "count_group_messages") {
+  } elseif ($function == "count") {
     if (!isset($_GET['groupId'])) {
       exit("Missing params");
     }
     $groupId = $_GET['groupId'];
     $result = $GROUP->count($groupId);
 
-  } elseif ($function == "join_group") {
+  } elseif ($function == "join") {
     if (!isset($_GET['id']) or !isset($_GET['input'])) {
       exit("Missing params");
     }
@@ -257,7 +257,7 @@ if ($method == "USER") {
     }
     $result = $GROUP->join($id,$input,$mode);
 
-  } elseif ($function == "join_group_password") {
+  } elseif ($function == "join_password") {
     if (!isset($_GET['id']) or !isset($_GET['groupId']) or !isset($_GET['password'])) {
       exit("Missing params");
     }
