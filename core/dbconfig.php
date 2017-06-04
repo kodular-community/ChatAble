@@ -23,12 +23,14 @@ function sanitize_output($buffer) {
 // TimeZone
 date_default_timezone_set('UTC');
 
+//Import DB config
+require_once("config.php");
+
 
 
 // DB Connection
 class Database
 {
-  require_once("config.php");
   private $host = DB_HOST;
   private $db_name = DB_NAME;
   private $username = DB_USER;
