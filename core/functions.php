@@ -66,6 +66,10 @@ class CHATABLE
       include_once 'classes/READER.php';
       $FUNCTION = new READER;
       return $FUNCTION;
+    } elseif ($method == "ADMIN") {
+      include_once 'classes/READER.php';
+      $FUNCTION = new ADMIN;
+      return $FUNCTION;
     }
   }
 }

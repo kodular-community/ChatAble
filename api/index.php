@@ -269,6 +269,40 @@ if ($method == "USER") {
   } else {
     exit("Bad Request");
   }
+
+
+} elseif ($method == "ADMIN") {
+  $ADMIN = $ChatAble->LOAD("ADMIN");
+
+  if ($function == "search_user") {
+    if (!isset($_GET['admin_id']) or !isset($_GET['input'])) {
+      exit("Missing params");
+    }
+    $admin_id = $_GET['admin_id'];
+    $input = $_GET['input'];
+    $result = $ADMIN->search_user($admin_id,$input);
+
+  } elseif ($function == "block") {
+    if (!isset($_GET['admin_id']) or !isset($_GET['user_id'])) {
+      exit("Missing params");
+    }
+    $admin_id = $_GET['admin_id'];
+    $user_id = $_GET['user_id'];
+    $result = $ADMIN->block($admin_id,$user_id);
+
+  } elseif ($function == "unblock") {
+    if (!isset($_GET['admin_id']) or !isset($_GET['user_id'])) {
+      exit("Missing params");
+    }
+    $admin_id = $_GET['admin_id'];
+    $user_id = $_GET['user_id'];
+    $result = $ADMIN->unblock($admin_id,$user_id);
+
+  } else {
+    exit("Bad Request");
+  }
+
+
 } else {
   exit("Bad request");
 }
