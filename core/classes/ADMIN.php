@@ -26,7 +26,7 @@ class ADMIN
 					$user = $stmt->fetch(PDO::FETCH_ASSOC)[0];
 					echo $user['username'];
 				} else {
-					http_response_code(403);
+					http_response_code(404);
 				}
 			}
 		} catch(PDOException $ex) {
@@ -50,7 +50,7 @@ class ADMIN
 					http_response_code(200);
 					echo "Success";
 				} else {
-					http_response_code(403);
+					http_response_code(404);
 				}
 			}
 		} catch(PDOException $ex) {
@@ -74,7 +74,7 @@ class ADMIN
 					http_response_code(200);
 					echo "Success";
 				} else {
-					http_response_code(403);
+					http_response_code(404);
 				}
 			}
 		} catch(PDOException $ex) {
