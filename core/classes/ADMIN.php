@@ -23,7 +23,7 @@ class ADMIN
 				$stmt = $this->conn->prepare("SELECT * FROM users WHERE id='$input' OR username='$input'");
 				if ($stmt->execute()) {
 					http_response_code(200);
-					$user = $stmt->fetch(PDO::FETCH_ASSOC)[0];
+					$user = $stmt->fetch(PDO::FETCH_ASSOC);
 					echo $user['username'];
 				} else {
 					http_response_code(404);
