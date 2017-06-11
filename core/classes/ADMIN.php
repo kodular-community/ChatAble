@@ -15,7 +15,7 @@ class ADMIN
 		{
 			$stmt = $this->conn->prepare("SELECT admin FROM users WHERE id='$admin_id'");
 			$stmt->execute();
-			$userRow = $stmt->fetch(PDO::FETCH_ASSOC)[0];
+			$userRow = $stmt->fetch(PDO::FETCH_ASSOC)['admin'];
 
 			if ($userRow == false) {
 				http_response_code(403);
@@ -40,7 +40,7 @@ class ADMIN
 		{
 			$stmt = $this->conn->prepare("SELECT admin FROM users WHERE id='$admin_id'");
 			$stmt->execute();
-			$userRow = $stmt->fetch(PDO::FETCH_ASSOC)[0];
+			$userRow = $stmt->fetch(PDO::FETCH_ASSOC)['admin'];
 
 			if ($userRow == false) {
 				http_response_code(403);
@@ -64,7 +64,7 @@ class ADMIN
 		{
 			$stmt = $this->conn->prepare("SELECT admin FROM users WHERE id='$admin_id'");
 			$stmt->execute();
-			$userRow = $stmt->fetch(PDO::FETCH_ASSOC)[0];
+			$userRow = $stmt->fetch(PDO::FETCH_ASSOC)['admin'];
 
 			if ($userRow == false) {
 				http_response_code(403);
