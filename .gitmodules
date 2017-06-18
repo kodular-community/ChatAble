@@ -1,0 +1,3 @@
+[submodule "status"]
+	path = status
+	url = https://github.com/phpsysinfo/phpsysinfo
