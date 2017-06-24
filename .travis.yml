@@ -11,4 +11,6 @@ php:
   - hhvm # on Trusty only
   - nightly
   
-script: travis.sh
+deploy:
+  provider: script
+  script: sh ./travis.sh
