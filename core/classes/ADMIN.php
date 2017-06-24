@@ -174,6 +174,10 @@ class ADMIN
 	{
 		try
 		{
+			$user = $this->conn->prepare("SELECT username FROM users WHERE id=(SELECT user_id FROM support_tickets WHERE id='$ticket_id');");
+			$user->execute();
+			$USER = $user->fetch(PDO::FETCH_ASSOC)['username'];
+
 			$title = $this->conn->prepare("SELECT * FROM support_messages WHERE ticket_id='$ticket_id' AND type='title' ORDER BY timestamp ASC;");
 			$title->execute();
 			$TITLE = $title->fetch(PDO::FETCH_ASSOC)['content'];
@@ -182,7 +186,7 @@ class ADMIN
 			$content->execute();
 			$CONTENT = $content->fetch(PDO::FETCH_ASSOC)['content'];
 
-			echo $TITLE.",".$CONTENT;
+			echo "Do you want to auto-assign this ticket?".","."<b>User:</b> ".$USER."<br><b>Title:</b> ".$TITLE."<br><br><i>".$CONTENT."</i>";
 		} catch(PDOException $ex) {
 			echo $ex->getMessage();
 		}
