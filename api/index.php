@@ -334,6 +334,14 @@ if ($method == "USER") {
     $ticket_id = $_GET['ticket_id'];
     $result = $ADMIN->get_ticket_info($ticket_id);
 
+  } elseif ($function == "assign_ticket") {
+    if (!isset($_GET['admin_id']) or !isset($_GET['ticket_id'])) {
+      exit("Missing params");
+    }
+    $id = $_GET['admin_id'];
+    $ticket_id = $_GET['ticket_id'];
+    $result = $ADMIN->assign_ticket($ticket_id);
+
   } else {
     exit("Bad Request");
   }

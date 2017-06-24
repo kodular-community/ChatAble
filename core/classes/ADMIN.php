@@ -187,4 +187,21 @@ class ADMIN
 			echo $ex->getMessage();
 		}
 	}
+
+	public function assign_ticket($reqUser,$ticket_id)
+	{
+		try
+		{
+			$assign = $this->conn->prepare("UPDATE `support_tickets` SET admin_id='$reqUser' WHERE id='$ticket_id';");
+
+			if ($assign->execute()) {
+				http_response_code(200);
+				echo "Success";
+			} else {
+				http_response_code(401);
+			}
+		} catch(PDOException $ex) {
+			echo $ex->getMessage();
+		}
+	}
 }
