@@ -6,19 +6,4 @@
         <var name="db_username" value="root"/>
         <var name="db_password" value=""/>
     </php>
-
-    <testsuites>
-        <testsuite name="Hello World Test Suite">
-            <directory>./Tests/</directory>
-        </testsuite>
-    </testsuites>
-
-    <filter>
-        <whitelist>
-            <directory>./</directory>
-            <exclude>
-                <directory>./Tests</directory>
-            </exclude>
-        </whitelist>
-    </filter>
 </phpunit>
