@@ -328,16 +328,11 @@ if ($method == "USER") {
     $result = $ADMIN->get_tickets_unassigned($id,$request);
 
   } elseif ($function == "get_ticket_info") {
-    if (!isset($_GET['admin_id'])) {
-      exit("Missing id");
+    if (!isset($_GET['admin_id']) or !isset($_GET['ticket_id'])) {
+      exit("Missing params");
     }
-    $id = $_GET['admin_id'];
-    if (isset($_GET['request'])) {
-      $request = $_GET['request'];
-    } else{
-      $request = "normal";
-    }
-    $result = $ADMIN->get_tickets_unassigned($id,$request);
+    $ticket_id = $_GET['ticket_id'];
+    $result = $ADMIN->get_tickets_unassigned($ticket_id);
 
   } else {
     exit("Bad Request");

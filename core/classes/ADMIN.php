@@ -169,4 +169,22 @@ class ADMIN
 			echo $ex->getMessage();
 		}
 	}
+
+	public function get_ticket_info($ticket_id)
+	{
+		try
+		{
+			$title = $this->conn->prepare("SELECT * FROM support_messages WHERE ticket_id='$ticket_id' AND type='title' ORDER BY timestamp ASC;");
+			$title->execute();
+			$TITLE = $title->fetch(PDO::FETCH_ASSOC)['content'];
+
+			$content = $this->conn->prepare("SELECT * FROM support_messages WHERE ticket_id='$ticket_id' AND type='title' ORDER BY timestamp ASC LIMIT 1;");
+			$content->execute();
+			$CONTENT = $content->fetch(PDO::FETCH_ASSOC)['content'];
+
+			echo $TITLE.",".$CONTENT;
+		} catch(PDOException $ex) {
+			echo $ex->getMessage();
+		}
+	}
 }
