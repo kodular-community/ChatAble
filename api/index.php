@@ -304,7 +304,7 @@ if ($method == "USER") {
     $result = $ADMIN->unblock($admin_id,$user_id);
 
   } elseif ($function == "get_tickets_assigned") {
-    if (!isset($_GET['id'])) {
+    if (!isset($_GET['admin_id'])) {
       exit("Missing id");
     }
     $id = $_GET['id'];
