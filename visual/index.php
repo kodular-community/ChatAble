@@ -51,7 +51,7 @@ if (!isset($_GET['reqConv']) or !isset($_GET['reqUser'])) {
         $stmt->execute();
         $unread = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($guestUser == "system") {
+        if ($convName == "system") {
           echo "BOT";
         } else {
           if ($unread['counter'] == 0) {
