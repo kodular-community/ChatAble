@@ -178,7 +178,7 @@ class ADMIN
 			$title->execute();
 			$TITLE = $title->fetch(PDO::FETCH_ASSOC)['content'];
 
-			$content = $this->conn->prepare("SELECT * FROM support_messages WHERE ticket_id='$ticket_id' AND type='title' ORDER BY timestamp ASC LIMIT 1;");
+			$content = $this->conn->prepare("SELECT * FROM support_messages WHERE ticket_id='$ticket_id' AND type='text' ORDER BY timestamp ASC LIMIT 1;");
 			$content->execute();
 			$CONTENT = $content->fetch(PDO::FETCH_ASSOC)['content'];
 
