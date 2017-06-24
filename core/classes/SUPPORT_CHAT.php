@@ -112,7 +112,13 @@ class SUPPORT_CHAT
   {
     try
     {
-      $insert = $this->conn->prepare("INSERT INTO support_messages (ticket_id,content,type,timestamp) VALUES ('{$ticketId}','".AesCtr::encrypt((emoji_unified_to_html($content)), $passwd, 256)."','$type','".date("Y-m-d H:i:s")."');");
+			$verAdmin = $this->conn->prepare("SELECT admin FROM users WHERE id='$ID'");
+			$verAdmin->execute();
+			if ($verAdmin->fetch(PDO::FETCH_ASSOC)['admin'] == false) {
+				$insert = $this->conn->prepare("INSERT INTO support_messages (ticket_id,content,type,timestamp) VALUES ('{$ticketId}','".AesCtr::encrypt((emoji_unified_to_html($content)), $passwd, 256)."','$type','".date("Y-m-d H:i:s")."');");
+			} else {
+				$insert = $this->conn->prepare("INSERT INTO support_messages (ticket_id,content,type,admin_msg,timestamp) VALUES ('{$ticketId}','".AesCtr::encrypt((emoji_unified_to_html($content)), $passwd, 256)."','$type','true','".date("Y-m-d H:i:s")."');");
+			}
       $insert2 = $this->conn->prepare("UPDATE `support_tickets` SET timestamp=".date('U')." WHERE id='$ticketId';");
       $insert2->execute();
       if ($insert->execute()) {
