@@ -307,7 +307,7 @@ if ($method == "USER") {
     if (!isset($_GET['admin_id'])) {
       exit("Missing id");
     }
-    $id = $_GET['id'];
+    $id = $_GET['admin_id'];
     if (isset($_GET['request'])) {
       $request = $_GET['request'];
     } else{
