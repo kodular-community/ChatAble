@@ -51,10 +51,14 @@ if (!isset($_GET['reqConv']) or !isset($_GET['reqUser'])) {
         $stmt->execute();
         $unread = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($unread['counter'] == 0) {
-          echo "READ";
+        if ($guestUser == "system") {
+          echo "BOT";
         } else {
-          echo "NOT READ";
+          if ($unread['counter'] == 0) {
+            echo "READ";
+          } else {
+            echo "NOT READ";
+          }
         }
       ?></div>
     </div>
