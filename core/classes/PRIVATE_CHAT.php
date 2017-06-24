@@ -166,28 +166,25 @@ class PRIVATE_CHAT
 				$cleverbot = $this->conn->prepare("SELECT user_client FROM private_chats WHERE id=$convId;");
 				$cleverbot->execute();
 				if (CLEVERBOT != "" and $cleverbot->fetch(PDO::FETCH_ASSOC)['user_client'] == 1 and $userId != 1) {
+					/*
 					$check = $this->conn->prepare("SELECT * FROM private_messages WHERE chat_id='$convId' AND type='cleverbot';");
 					$check->execute();
 					$csV = $check->fetchAll(PDO::FETCH_ASSOC);
 					if($check->rowCount() > 0) {
 						$cs = $csV[max(array_keys($csV))]['content'];
 					} else {
-						$cs = "null";
+						*/$cs = "null";/*
 					}
-					echo $cs;
+					*/
 					$base_url = 'https://www.cleverbot.com/getreply';
 					if ($cs != "null") {
 				    $url = $base_url . "?input=".rawurlencode($content) . "&key=".CLEVERBOT . "&cs=".str_replace('=','',$cs)."&callback=ProcessReply";
 					} else {
 						$url = $base_url . "?input=".rawurlencode($content) . "&key=".CLEVERBOT;
 					}
-					echo $url;
 			    $response = file_get_contents($url);
 			    $output = json_decode($response, true);
 
-					$CS = $this->conn->prepare("INSERT INTO private_messages (chat_id,sender_id,content,type,timestamp) VALUES ('{$convId}',0,'".$output['cs']."','cleverbot','".date("Y-m-d H:i:s")."');");
-					$CS->execute();
-					echo $output['output'];
 					$this->post(1,$convId,$output['output'],'text',$passwd);
 				} else {
 					http_response_code(200);
