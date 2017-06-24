@@ -340,7 +340,7 @@ if ($method == "USER") {
     }
     $id = $_GET['admin_id'];
     $ticket_id = $_GET['ticket_id'];
-    $result = $ADMIN->assign_ticket($ticket_id);
+    $result = $ADMIN->assign_ticket($id,$ticket_id);
 
   } else {
     exit("Bad Request");
