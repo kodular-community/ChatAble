@@ -176,8 +176,8 @@ class PRIVATE_CHAT
 					}
 					echo $cs;
 					$base_url = 'https://www.cleverbot.com/getreply';
-					if ($cs!="null") {
-				    $url = $base_url . "?input=".rawurlencode($content) . "&key=".CLEVERBOT . "&cs=".$cs."&callback=ProcessReply";
+					if ($cs != "null") {
+				    $url = $base_url . "?input=".rawurlencode($content) . "&key=".CLEVERBOT . "&cs=".str_replace('=','',$cs)."&callback=ProcessReply";
 					} else {
 						$url = $base_url . "?input=".rawurlencode($content) . "&key=".CLEVERBOT;
 					}
