@@ -121,7 +121,7 @@ class ADMIN
 		}
 	}
 
-	public function get_tickets_assigned($reqUser,$request)
+	public function get_tickets_unassigned($reqUser,$request)
 	{
 		try
 		{
