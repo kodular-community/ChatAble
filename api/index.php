@@ -273,7 +273,11 @@ if ($method == "USER") {
 
 } elseif ($method == "ADMIN") {
   $ADMIN = $ChatAble->LOAD("ADMIN");
-  $ADMIN->VERIFY($_GET['admin_id']);
+  if (!isset($_GET['admin_id'])) {
+    exit('No admin');
+  } else {
+    $ADMIN->VERIFY($_GET['admin_id']);
+  }
 
   if ($function == "search_user") {
     if (!isset($_GET['admin_id']) or !isset($_GET['input'])) {
