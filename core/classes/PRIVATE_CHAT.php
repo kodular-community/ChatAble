@@ -186,7 +186,7 @@ class PRIVATE_CHAT
 					$CS = $this->conn->prepare("INSERT INTO private_messages (chat_id,sender_id,content,type,timestamp) VALUES ('{$convId}',0,'".$output['cs']."','cleverbot','".date("Y-m-d H:i:s")."');");
 					$CS->execute();
 
-					$this->post(1,$convId,$output['content'],'text',$passwd);
+					$this->post(1,$convId,$output['output'],'text',$passwd);
 				} else {
 					http_response_code(200);
 					echo "Success";
