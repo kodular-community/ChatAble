@@ -162,8 +162,26 @@ class PRIVATE_CHAT
 		{
 		  $insert = $this->conn->prepare("INSERT INTO private_messages (chat_id,sender_id,content,type,timestamp) VALUES ('{$convId}','{$userId}','".AesCtr::encrypt((emoji_unified_to_html($content)), $passwd, 256)."','$type','".date("Y-m-d H:i:s")."');");
       $insert2 = $this->conn->prepare("UPDATE `private_chats` SET timestamp=".date('U')." WHERE id='$convId';");
-      $insert2->execute();
-			if ($insert->execute()) {
+			if ($insert->execute() and $insert2->execute()) {
+				$cleverbot = $this->conn->prepare("SELECT user_client FROM private_chats WHERE id=$convId;");
+				$cleverbot->execute();
+				if (CLEVERBOT != "" and $cleverbot->fetch(PDO::FETCH_ASSOC)['user_client'] == 1) {
+					$check = $this->conn->prepare("SELECT * FROM private_messages WHERE chat_id=$convId AND type=cleverbot;")
+					$check->execute();
+					$csV = $check->fetchAll(PDO::FETCH_ASSOC);
+					if($stmt->rowCount() > 0) {
+						$cs = $csV[max(array_keys($csV))]['content'];
+					} else {
+						$cs = "null"
+					}
+					$base_url = 'https://www.cleverbot.com/getreply';
+			    $url = $base_url . "?input=" . rawurlencode($content) . "&key=" . CLEVERBOT . ($cs!="null") ? "&cs=".$cs."&callback=ProcessReply";
+			    $response = file_get_contents($url);
+			    $output = json_decode($response, true);
+
+					$CS = $this->conn->prepare("INSERT INTO private_messages (chat_id,sender_id,content,type,timestamp) VALUES ('{$convId}',0,'".$output['cs']."','cleverbot','".date("Y-m-d H:i:s")."');")
+					$CS->execute();
+				}
 				http_response_code(200);
 				echo "Success";
 
