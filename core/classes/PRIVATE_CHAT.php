@@ -165,28 +165,34 @@ class PRIVATE_CHAT
 			if ($insert->execute() and $insert2->execute()) {
 				$cleverbot = $this->conn->prepare("SELECT user_client FROM private_chats WHERE id=$convId;");
 				$cleverbot->execute();
-				if (CLEVERBOT != "" and $cleverbot->fetch(PDO::FETCH_ASSOC)['user_client'] == 1) {
-					$check = $this->conn->prepare("SELECT * FROM private_messages WHERE chat_id=$convId AND type=cleverbot;")
+				if (CLEVERBOT != "" and $cleverbot->fetch(PDO::FETCH_ASSOC)['user_client'] == 1 and $userId != 1) {
+					$check = $this->conn->prepare("SELECT * FROM private_messages WHERE chat_id='$convId' AND type='cleverbot';");
 					$check->execute();
 					$csV = $check->fetchAll(PDO::FETCH_ASSOC);
-					if($stmt->rowCount() > 0) {
+					if($check->rowCount() > 0) {
 						$cs = $csV[max(array_keys($csV))]['content'];
 					} else {
-						$cs = "null"
+						$cs = "null";
 					}
 					$base_url = 'https://www.cleverbot.com/getreply';
-			    $url = $base_url . "?input=" . rawurlencode($content) . "&key=" . CLEVERBOT . ($cs!="null") ? "&cs=".$cs."&callback=ProcessReply";
+					if ($cs!="null") {
+				    $url = $base_url . "?input=".rawurlencode($content) . "&key=".CLEVERBOT . "&cs=".$cs."&callback=ProcessReply";
+					} else {
+						$url = $base_url . "?input=".rawurlencode($content) . "&key=".CLEVERBOT;
+					}
 			    $response = file_get_contents($url);
 			    $output = json_decode($response, true);
 
-					$CS = $this->conn->prepare("INSERT INTO private_messages (chat_id,sender_id,content,type,timestamp) VALUES ('{$convId}',0,'".$output['cs']."','cleverbot','".date("Y-m-d H:i:s")."');")
+					$CS = $this->conn->prepare("INSERT INTO private_messages (chat_id,sender_id,content,type,timestamp) VALUES ('{$convId}',0,'".$output['cs']."','cleverbot','".date("Y-m-d H:i:s")."');");
 					$CS->execute();
-				}
-				http_response_code(200);
-				echo "Success";
 
-				include_once 'READER.php'; $READER = new READER;
-        $READER->new_msg($userId,$convId,"private");
+					$this->post(1,$convId,$output['content'],'text',$passwd);
+				} else {
+					http_response_code(200);
+					echo "Success";
+					include_once 'READER.php'; $READER = new READER;
+	        $READER->new_msg($userId,$convId,"private");
+				}
 			} else {
 				http_response_code(401);
 			}
