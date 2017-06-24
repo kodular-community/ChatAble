@@ -332,7 +332,7 @@ if ($method == "USER") {
       exit("Missing params");
     }
     $ticket_id = $_GET['ticket_id'];
-    $result = $ADMIN->get_tickets_unassigned($ticket_id);
+    $result = $ADMIN->get_ticket_info($ticket_id);
 
   } else {
     exit("Bad Request");
