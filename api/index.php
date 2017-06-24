@@ -273,6 +273,7 @@ if ($method == "USER") {
 
 } elseif ($method == "ADMIN") {
   $ADMIN = $ChatAble->LOAD("ADMIN");
+  $ADMIN->VERIFY($_GET['admin_id']);
 
   if ($function == "search_user") {
     if (!isset($_GET['admin_id']) or !isset($_GET['input'])) {
@@ -297,6 +298,42 @@ if ($method == "USER") {
     $admin_id = $_GET['admin_id'];
     $user_id = $_GET['user_id'];
     $result = $ADMIN->unblock($admin_id,$user_id);
+
+  } elseif ($function == "get_tickets_assigned") {
+    if (!isset($_GET['id'])) {
+      exit("Missing id");
+    }
+    $id = $_GET['id'];
+    if (isset($_GET['request'])) {
+      $request = $_GET['request'];
+    } else{
+      $request = "normal";
+    }
+    $result = $ADMIN->get_tickets_assigned($id,$request);
+
+  } elseif ($function == "get_tickets_unassigned") {
+    if (!isset($_GET['admin_id'])) {
+      exit("Missing id");
+    }
+    $id = $_GET['admin_id'];
+    if (isset($_GET['request'])) {
+      $request = $_GET['request'];
+    } else{
+      $request = "normal";
+    }
+    $result = $ADMIN->get_tickets_unassigned($id,$request);
+
+  } elseif ($function == "get_ticket_info") {
+    if (!isset($_GET['admin_id'])) {
+      exit("Missing id");
+    }
+    $id = $_GET['admin_id'];
+    if (isset($_GET['request'])) {
+      $request = $_GET['request'];
+    } else{
+      $request = "normal";
+    }
+    $result = $ADMIN->get_tickets_unassigned($id,$request);
 
   } else {
     exit("Bad Request");
