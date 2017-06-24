@@ -174,18 +174,20 @@ class PRIVATE_CHAT
 					} else {
 						$cs = "null";
 					}
+					echo $cs;
 					$base_url = 'https://www.cleverbot.com/getreply';
 					if ($cs!="null") {
 				    $url = $base_url . "?input=".rawurlencode($content) . "&key=".CLEVERBOT . "&cs=".$cs."&callback=ProcessReply";
 					} else {
 						$url = $base_url . "?input=".rawurlencode($content) . "&key=".CLEVERBOT;
 					}
+					echo $url;
 			    $response = file_get_contents($url);
 			    $output = json_decode($response, true);
 
 					$CS = $this->conn->prepare("INSERT INTO private_messages (chat_id,sender_id,content,type,timestamp) VALUES ('{$convId}',0,'".$output['cs']."','cleverbot','".date("Y-m-d H:i:s")."');");
 					$CS->execute();
-
+					echo $output['output'];
 					$this->post(1,$convId,$output['output'],'text',$passwd);
 				} else {
 					http_response_code(200);
