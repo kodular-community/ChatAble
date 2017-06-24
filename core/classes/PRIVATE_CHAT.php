@@ -125,7 +125,7 @@ class PRIVATE_CHAT
 	{
 		try
 		{
-			$stmt = $this->conn->prepare("SELECT * FROM private_messages WHERE chat_id='$convId' ORDER BY timestamp ASC;");
+			$stmt = $this->conn->prepare("SELECT * FROM private_messages WHERE chat_id='$convId' AND type<>'cleverbot' ORDER BY timestamp ASC;");
 			$stmt->execute();
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
