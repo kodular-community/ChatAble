@@ -126,55 +126,6 @@ class ADMIN
 		try
 		{
 			if ($request == "normal") {
-				$stmt = $this->conn->prepare("SELECT id FROM support_tickets WHERE admin_id='$reqUser' ORDER BY timestamp DESC;");
-				$stmt->execute();
-				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-				$numItems = count($result);
-				$i = 1;
-        $idCounter = 0;
-				foreach ($result as $item) {
-					$reader = $this->conn->prepare("SELECT * FROM reader WHERE user_id='$reqUser' AND chat_id=".$item['id']." AND type='support' ORDER BY chat_id ASC;");
-          $reader->execute();
-          $reader = $reader->fetch(PDO::FETCH_ASSOC)['counter'];
-          $unread = (($reader==0)?"":" (".$reader.")");
-
-					$stmt = $this->conn->prepare("SELECT content FROM support_messages WHERE ticket_id='".$item['id']."' AND type='title';");
-					$stmt->execute();
-					$content = $stmt->fetch(PDO::FETCH_ASSOC)['content'];
-          $idCounter = $idCounter+1;
-					if($i++ == $numItems) {
-						echo $content.$unread;
-					} else {
-						echo $content.$unread.",";
-					}
-          $i = $i++;
-				}
-			} else {
-				$stmt = $this->conn->prepare("SELECT id FROM support_tickets WHERE admin_id='$reqUser' ORDER BY timestamp DESC;");
-				$stmt->execute();
-				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-				$numItems = count($result);
-				$i = 0;
-				foreach ($result as $item) {
-					if(++$i === $numItems) {
-						echo $item['id'];
-					} else {
-						echo $item['id'].",";
-					}
-				}
-			}
-		} catch(PDOException $ex) {
-			echo $ex->getMessage();
-		}
-	}
-
-	public function get_tickets_unassigned($reqUser,$request)
-	{
-		try
-		{
-			if ($request == "normal") {
 				$stmt = $this->conn->prepare("SELECT id FROM support_tickets WHERE admin_id='0' ORDER BY timestamp DESC;");
 				$stmt->execute();
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
