@@ -110,17 +110,23 @@ if (!isset($_GET['reqConv']) or !isset($_GET['reqUser'])) {
         $stmt->execute();
         $adminId = $stmt->fetch(PDO::FETCH_ASSOC)['admin_id'];
 
-        if ($adminId == 0) {
-          echo "UNASSIGNED";
-        } else {
-          echo "ASSIGNED TO ";
-          $stmt = $ChatAble->runQuery("SELECT username FROM users WHERE id='$adminId';");
+        if ($adminId == $reqUser) {
+          $adminMode = true;
+          $stmt = $ChatAble->runQuery("SELECT username FROM users WHERE id='(SELECT user_id FROM support_tickets WHERE id='$reqConv')';");
           $stmt->execute();
-          $adminUsername = ucfirst($stmt->fetch(PDO::FETCH_ASSOC)['username']);
-          echo $adminUsername;
+          $userName = $stmt->fetch(PDO::FETCH_ASSOC)['username'];
+          echo "GUEST USER: ".ucfirst($userName);
+        } else {
+          if ($adminId == 0) {
+            echo "UNASSIGNED";
+          } else {
+            echo "ASSIGNED TO ";
+            $stmt = $ChatAble->runQuery("SELECT username FROM users WHERE id='$adminId';");
+            $stmt->execute();
+            $adminUsername = ucfirst($stmt->fetch(PDO::FETCH_ASSOC)['username']);
+            echo $adminUsername;
+          }
         }
-
-        $adminReq = ($reqUser==$adminId) ? true : false ;
       ?></div>
     </div>
 
@@ -147,7 +153,7 @@ if (!isset($_GET['reqConv']) or !isset($_GET['reqUser'])) {
             }
 
             echo "
-            <li class='";if($message['admin_msg']=="true"){echo"other";}else{echo"self";}echo"'>
+            <li class='";if($message['admin_msg']=="true" and $adminMode==false){echo"other";}elseif($message['admin_msg']=="true" and $adminMode==true){echo"self";}elseif($message['admin_msg']=="false" and $adminMode==false){echo"other";}elseif($message['admin_msg']=="false" and $adminMode==true){echo"other";}echo"'>
               <div class='msg'>";
               if($message['admin_msg']=="true"){echo"<div class='user'>".$adminUsername."<span class='range admin'>Support</span></div>";}
             if ($message['type'] == "image") {
