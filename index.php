@@ -1,4 +1,4 @@
 <?php
 
-header('Location: https://chat.thunkable.ga/home/');
+header('Location: home/');
 exit();
