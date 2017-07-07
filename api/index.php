@@ -98,6 +98,14 @@ if ($method == "USER") {
     $code = $_GET['code'];
     $result = $USER->translate_code($id,$code);
 
+  } elseif ($function == "update_language") {
+    if (!isset($_GET['id']) or !isset($_GET['code'])) {
+      exit("Missing params");
+    }
+    $id = $_GET['id'];
+    $code = $_GET['code'];
+    $result = $USER->update_language($id,$code);
+
   } else {
     exit("Bad Request");
   }

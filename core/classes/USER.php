@@ -283,4 +283,16 @@ class USER
 			echo $ex->getMessage();
 		}
 	}
+
+	public function update_language($id,$code)
+	{
+		try
+		{
+			$langs = json_decode(file_get_contents("../utils/translate/gtlanguages.json"), true);
+			$stmt = $this->conn->prepare("UPDATE `users` SET `language` = '".$langs[$code-1]['code']."' WHERE `users`.`id` = $id;");
+			if ($stmt->execute()) { echo "Success"; }
+		} catch(PDOException $ex) {
+			echo $ex->getMessage();
+		}
+	}
 }
