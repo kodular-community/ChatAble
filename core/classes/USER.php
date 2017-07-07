@@ -175,21 +175,20 @@ class USER
 		try
 		{
 			if ($type == "email") {
-				$stmt = $this->conn->prepare("SELECT id,username,email,admin,blocked FROM users WHERE email='$user'");
+				$stmt = $this->conn->prepare("SELECT id,username,email,admin,blocked,translate FROM users WHERE email='$user'");
 				$stmt->execute();
 				$userRow = $stmt->fetch(PDO::FETCH_ASSOC);
-			  print($userRow['id'].",".$userRow['username'].",".$userRow['email'].",".$userRow['admin'].",".$userRow['blocked']);
-
+			  print($userRow['id'].",".$userRow['username'].",".$userRow['email'].",".$userRow['admin'].",".$userRow['blocked'].",".$userRow['translate']);
 			} elseif ($type == "username") {
-				$stmt = $this->conn->prepare("SELECT id,username,email,admin,blocked FROM users WHERE username='$user'");
+				$stmt = $this->conn->prepare("SELECT id,username,email,admin,blocked,translate FROM users WHERE username='$user'");
 				$stmt->execute();
 				$userRow = $stmt->fetch(PDO::FETCH_ASSOC);
-			  print($userRow['id'].",".$userRow['username'].",".$userRow['email'].",".$userRow['admin'].",".$userRow['blocked']);
+			  print($userRow['id'].",".$userRow['username'].",".$userRow['email'].",".$userRow['admin'].",".$userRow['blocked'].",".$userRow['translate']);
 			} elseif ($type == "id") {
-				$stmt = $this->conn->prepare("SELECT id,username,email,admin,blocked FROM users WHERE id='$user'");
+				$stmt = $this->conn->prepare("SELECT id,username,email,admin,blocked,translate FROM users WHERE id='$user'");
 				$stmt->execute();
 				$userRow = $stmt->fetch(PDO::FETCH_ASSOC);
-			  print($userRow['id'].",".$userRow['username'].",".$userRow['email'].",".$userRow['admin'].",".$userRow['blocked']);
+			  print($userRow['id'].",".$userRow['username'].",".$userRow['email'].",".$userRow['admin'].",".$userRow['blocked'].",".$userRow['translate']);
       }
 		} catch(PDOException $ex) {
 			echo $ex->getMessage();
@@ -240,6 +239,46 @@ class USER
         $i++;
       }
 
+		} catch(PDOException $ex) {
+			echo $ex->getMessage();
+		}
+	}
+
+	public function translate($id,$type)
+	{
+		try
+		{
+			if ($type == "1") {
+				$stmt = $this->conn->prepare("UPDATE `users` SET `translate` = '1' WHERE `users`.`id` = $id;");
+				if ($stmt->execute()) { echo "Success"; }
+			} elseif ($type == "2") {
+				$stmt = $this->conn->prepare("UPDATE `users` SET `translate` = '2' WHERE `users`.`id` = $id;");
+				if ($stmt->execute()) { echo "Success"; }
+			} elseif ($type == "3") {
+				$langs = json_decode(file_get_contents("../utils/translate/gtlanguages.json"), true);
+			  $numItems = count($langs);
+			  $i = 0;
+			  foreach ($langs as $lang) {
+			    $i = $i+1;
+			    if ($i == $numItems) {
+			      echo $lang['language'];
+			    } else {
+			      echo $lang['language'].",";
+			    }
+			  }
+      }
+		} catch(PDOException $ex) {
+			echo $ex->getMessage();
+		}
+	}
+
+	public function translate_code($id,$code)
+	{
+		try
+		{
+			$langs = json_decode(file_get_contents("../utils/translate/gtlanguages.json"), true);
+			$stmt = $this->conn->prepare("UPDATE `users` SET `translate` = '".$langs[$code-1]['code']."' WHERE `users`.`id` = $id;");
+			if ($stmt->execute()) { echo "Success"; }
 		} catch(PDOException $ex) {
 			echo $ex->getMessage();
 		}

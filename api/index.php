@@ -82,6 +82,22 @@ if ($method == "USER") {
     $id = $_GET['id'];
     $result = $USER->unread_counter($id);
 
+  } elseif ($function == "translate") {
+    if (!isset($_GET['id']) or !isset($_GET['type'])) {
+      exit("Missing params");
+    }
+    $id = $_GET['id'];
+    $type = $_GET['type'];
+    $result = $USER->translate($id,$type);
+
+  } elseif ($function == "translate_code") {
+    if (!isset($_GET['id']) or !isset($_GET['code'])) {
+      exit("Missing params");
+    }
+    $id = $_GET['id'];
+    $code = $_GET['code'];
+    $result = $USER->translate_code($id,$code);
+
   } else {
     exit("Bad Request");
   }
