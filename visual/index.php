@@ -7,6 +7,7 @@ ini_set('display_errors', 'On');
 //Start API
 session_start();
 require_once('../core/functions.php');
+require '../utils/translate/autoload.php';   use Stichoza\GoogleTranslate\TranslateClient;
 $ChatAble = new CHATABLE();
 $Parsedown = new Parsedown();
 
@@ -23,6 +24,14 @@ if (!isset($_GET['reqConv']) or !isset($_GET['reqUser'])) {
   $reqUser = $_GET['reqUser'];
   $reqConv = $_GET['reqConv'];
   $passwd = $_GET['passwd'];
+  $translate = $ChatAble->runQuery("SELECT language,translate FROM users WHERE id='$reqUser';")->execute()->fetch(PDO::FETCH_ASSOC)['translate'];
+  if ($translate != "1") {
+    if ($translate == 2) {
+      $tr = new TranslateClient(null, $translate['language']);
+    } else {
+      $tr = new TranslateClient($translate['translate'], $translate['language']);
+    }
+  }
 
   if (!isset($_GET['currentTime'])) {
 	  $clientTime = mktime(0,0,0,0,0,0);
@@ -90,7 +99,11 @@ if (!isset($_GET['reqConv']) or !isset($_GET['reqUser'])) {
             if ($message['type'] == "image") {
               echo "<a href=/media/".AesCtr::decrypt($message['content'], $passwd, 256)." data-lightbox='private'><img src=/media/".AesCtr::decrypt($message['content'], $passwd, 256)."></img></a>";
             } else {
-              echo "<p>".$Parsedown->text(AesCtr::decrypt($message['content'], $passwd, 256))."</p>";
+              if ($translate != "1") {
+                echo "<p>".$tr->translate($Parsedown->text(AesCtr::decrypt($message['content'], $passwd, 256)))."</p>";
+              } else {
+                echo "<p>".$Parsedown->text(AesCtr::decrypt($message['content'], $passwd, 256))."</p>";
+              }
             }
             echo "<time>".date("H:i",$messageTime)."</time></div></li>";
           }
@@ -160,9 +173,17 @@ if (!isset($_GET['reqConv']) or !isset($_GET['reqUser'])) {
               echo "<a href=/media/".AesCtr::decrypt($message['content'], $passwd, 256)." data-lightbox='support'><img src=/media/".AesCtr::decrypt($message['content'], $passwd, 256)."></img></a>";
             } else {
               if ($i != 1) {
-                echo "<p>".$Parsedown->text(AesCtr::decrypt($message['content'], $passwd, 256))."</p>";
+                if ($translate != "1") {
+                  echo "<p>".$tr->translate($Parsedown->text(AesCtr::decrypt($message['content'], $passwd, 256)))."</p>";
+                } else {
+                  echo "<p>".$Parsedown->text(AesCtr::decrypt($message['content'], $passwd, 256))."</p>";
+                }
               } else {
-                echo "<p>".$Parsedown->text($message['content'])."</p>";
+                if ($translate != "1") {
+                  echo "<p>".$tr->translate($Parsedown->text($message['content']))."</p>";
+                } else {
+                  echo "<p>".$Parsedown->text($message['content'])."</p>";
+                }
               }
             }
             echo "<time>".date("H:i",$messageTime)."</time></div></li>";
@@ -227,7 +248,11 @@ if (!isset($_GET['reqConv']) or !isset($_GET['reqUser'])) {
             if ($message['type'] == "image") {
               echo "<a href=/media/".AesCtr::decrypt($message['content'], $passwd, 256)." data-lightbox='group'><img src=/media/".AesCtr::decrypt($message['content'], $passwd, 256)."></img></a>";
             } else {
-              echo "<p>".$Parsedown->text(AesCtr::decrypt($message['content'], $passwd, 256))."</p>";
+              if ($translate != "1") {
+                echo "<p>".$tr->translate($Parsedown->text(AesCtr::decrypt($message['content'], $passwd, 256)))."</p>";
+              } else {
+                echo "<p>".$Parsedown->text(AesCtr::decrypt($message['content'], $passwd, 256))."</p>";
+              }
             }
             echo "<time>".date("H:i",$messageTime)."</time></div></li>";
           }
