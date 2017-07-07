@@ -114,9 +114,12 @@ class GROUP_CHAT extends CHATABLE
           } else {
             $stmt = $this->conn->prepare("INSERT INTO group_chats (title,alias,password,creator,users,timestamp) VALUES ('".ucfirst($title)."','".strtolower($alias)."','{$password}','{$id}','{$id}','".date('U')."');");
             if ($stmt->execute()) {
-              $this->update_reader($id,$this->conn->lastInsertId(),0,"new","group");
               http_response_code(200);
               echo "Success";
+
+							$convId = $this->conn->lastInsertId();
+							include_once 'READER.php'; $READER = new READER;
+	            $READER->new_conv(0,$convId,"group");
             } else {
               http_response_code(403);
             }
