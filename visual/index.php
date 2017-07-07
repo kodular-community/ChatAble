@@ -166,7 +166,7 @@ if (!isset($_GET['reqConv']) or !isset($_GET['reqUser'])) {
             }
 
             echo "
-            <li class='";if($message['admin_msg']=="true" and $adminMode==false){echo"other";}elseif($message['admin_msg']=="true" and $adminMode==true){echo"self";}elseif($message['admin_msg']=="false" and $adminMode==false){echo"other";}elseif($message['admin_msg']=="false" and $adminMode==true){echo"other";}echo"'>
+            <li class='";if($message['admin_msg']=="true" and $adminMode==false){echo"other";}elseif($message['admin_msg']=="true" and $adminMode==true){echo"self";}elseif($message['admin_msg']=="false" and $adminMode==false){echo"self";}elseif($message['admin_msg']=="false" and $adminMode==true){echo"other";}echo"'>
               <div class='msg'>";
               if($message['admin_msg']=="true"){echo"<div class='user'>".$adminUsername."<span class='range admin'>Support</span></div>";}
             if ($message['type'] == "image") {
