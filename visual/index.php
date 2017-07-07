@@ -24,7 +24,7 @@ if (!isset($_GET['reqConv']) or !isset($_GET['reqUser'])) {
   $reqUser = $_GET['reqUser'];
   $reqConv = $_GET['reqConv'];
   $passwd = $_GET['passwd'];
-  $translate = $ChatAble->runQuery("SELECT language,translate FROM users WHERE id='$reqUser';")->execute()->fetch(PDO::FETCH_ASSOC)['translate'];
+  $translate = $ChatAble->runQuery("SELECT language,translate FROM users WHERE id='$reqUser';"); $translate->execute(); $translate = $translate->fetch(PDO::FETCH_ASSOC)['translate'];
   if ($translate != "1") {
     if ($translate == 2) {
       $tr = new TranslateClient(null, $translate['language']);
